@@ -74,7 +74,7 @@
                             overflow:   "hidden"
                         });
                         var transConfig = {
-                            "new":      i,
+                            "next":     i,
                             "old":      shim,
                             "view":     viewPane,
                             "duration": defaults.duration
@@ -95,11 +95,11 @@
         });
         
         return this;
-    }
+    };
     
     $.fn.gallery.fade = function(config) {
         config.old.fadeOut(config.duration, function(e) {
             $(this).remove();
         });
-    }
+    };
 })(jQuery);
