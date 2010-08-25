@@ -128,4 +128,43 @@
             }
         });
     };
+    
+    $.fn.gallery.squares = function(config) {
+        var x = 3,
+            y = 2,
+            grid = [],
+            dx = config.next.width() / x,
+            dy = config.next.height() / y,
+            ox = (config.next.outerWidth() - config.next.width()) / 2,
+            oy = (config.next.outerHeight() - config.next.height()) / 2;
+            
+        for (var i = 0; i < y; i++) {
+            grid[i] = [];
+            for (var j = 0; j < x; j++) {
+                grid[i].push(config.old.clone().css({
+                    border:                 "0",
+                    width:                  dx,
+                    height:                 dy,
+                    left:                   (dx * j) + ox + j,
+                    top:                    (dy * i) + oy + i,
+                    backgroundPosition:     ((-config.old.get(0).offsetWidth / x) * j) + 'px ' + ((-config.old.get(0).offsetHeight / y) * i) + 'px'
+                }));
+                config.view.append(grid[i][j]);
+                grid[i][j].ready(function(e) {
+                    grid[i][j].animate({
+                        width:      0,
+                        height:     0,
+                        opacity:    0
+                    },{
+                        duration:   config.duration,
+                        queue:      false,
+                        complete:   function(e) {
+                            $(this).remove();
+                        }
+                    });
+                });
+            }
+        }
+        config.old.remove();
+    }
 })(jQuery);
