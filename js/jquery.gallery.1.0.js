@@ -25,7 +25,12 @@
                                 .css({
                                     position:   "relative"
                                 }),
+                image       = [],
                 thumbs      = $(".clip", gallery);
+            
+            thumbs.find("a").each(function() {
+                image.push(new Image().src = this.href);
+            });
             
             thumbs.delegate("a", "click", function(e) {
                 e.preventDefault();
