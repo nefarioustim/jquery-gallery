@@ -52,11 +52,17 @@
                                         top:                0,
                                         zIndex:             10
                                     });
+                    viewPane.css({
+                        width:  shim.css("width"),
+                        height: shim.css("height")
+                    })
                     viewPane.append(shim);
-                    old.remove();
-                    i.show();
-                    shim.fadeOut(400, function(e) {
-                        $(this).remove();
+                    shim.ready(function(e) {
+                        old.remove();
+                        i.show();
+                        shim.fadeOut(400, function(e) {
+                            $(this).remove();
+                        });
                     });
                 }
             });
