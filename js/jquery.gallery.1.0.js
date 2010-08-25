@@ -12,7 +12,9 @@
     $.fn.gallery = function(config) {
         var defaults = {
             "visiblePanes": 5,
-            "panesToMove": 5
+            "panesToMove":  5,
+            "transition":   "fade",
+            "duration":     400
         };
         
         if (config) $.extend(defaults, config);
@@ -28,6 +30,7 @@
             thumbs.delegate("a", "click", function(e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
+                
                 var el      = $(this),
                     old     = viewPane.find("img"),
                     i       = new Image();
@@ -60,9 +63,18 @@
                     shim.ready(function(e) {
                         old.remove();
                         i.show();
-                        shim.fadeOut(400, function(e) {
-                            $(this).remove();
+                        viewPane.css({
+                            height:     shim.get(0).offsetHeight + 'px',
+                            width:      shim.get(0).offsetWidth + 'px',
+                            overflow:   "hidden"
                         });
+                        var transConfig = {
+                            "new":      i,
+                            "old":      shim,
+                            "view":     viewPane,
+                            "duration": defaults.duration
+                        }
+                        gallery.gallery[defaults.transition](transConfig);
                     });
                 }
             });
@@ -78,5 +90,11 @@
         });
         
         return this;
+    }
+    
+    $.fn.gallery.fade = function(config) {
+        config.old.fadeOut(config.duration, function(e) {
+            $(this).remove();
+        });
     }
 })(jQuery);
