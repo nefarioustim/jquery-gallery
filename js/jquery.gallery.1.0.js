@@ -1,5 +1,5 @@
 (function($) {
-    var debugMode = true;
+    var debugMode = false;
     
     function debug(msg) {
         if(debugMode && window.console && window.console.log){
@@ -14,7 +14,7 @@
             "visiblePanes": 5,
             "panesToMove":  5,
             "transition":   "fade",
-            "duration":     400
+            "duration":     600
         };
         
         if (config) $.extend(defaults, config);
@@ -108,6 +108,12 @@
     
     $.fn.gallery.fade = function(config) {
         config.old.fadeOut(config.duration, function(e) {
+            $(this).remove();
+        });
+    };
+    
+    $.fn.gallery.wipe = function(config) {
+        config.old.hide(config.duration, function(e) {
             $(this).remove();
         });
     };

@@ -92,6 +92,8 @@
     };
     
     $.fn.gallery.cheeseyZoom = function(config) {
+        var cheesiness = 4;
+        
         config.view.css({
             height:     config.next.get(0).offsetHeight,
             width:      config.next.get(0).offsetWidth,
@@ -105,7 +107,7 @@
             height:     "100%",
             width:      "100%"
         }, {
-            duration:   config.duration,
+            duration:   config.duration * cheesiness,
             queue:      false
         });
         config.old.fadeOut(config.duration, function(e) {
@@ -151,10 +153,8 @@
         });
     };
     
-    $.fn.gallery.squares = function(config) {
-        var x = 3,
-            y = 2,
-            grid = [],
+    function squares(x, y, config) {
+        var grid = [],
             dx = config.next.width() / x,
             dy = config.next.height() / y,
             ox = (config.next.outerWidth() - config.next.width()) / 2,
@@ -171,6 +171,7 @@
                     top:                    (dy * i) + oy,
                     backgroundPosition:     ((-config.old.get(0).offsetWidth / x) * j) + 'px ' + ((-config.old.get(0).offsetHeight / y) * i) + 'px'
                 }));
+                //var rnd = config.duration + (Math.floor(Math.random() * (3)) + 1) * 500;
                 config.view.append(grid[i][j].animate({
                     width:      0,
                     height:     0,
@@ -185,5 +186,15 @@
             }
         }
         config.old.remove();
+    }
+    
+    $.fn.gallery.squares = function(config) {
+        squares(3, 2, config);
+    }
+    $.fn.gallery.smallSquares = function(config) {
+        squares(6, 4, config);
+    }
+    $.fn.gallery.tinySquares = function(config) {
+        squares(12, 8, config);
     }
 })(jQuery);
