@@ -167,8 +167,8 @@
                     border:                 "0",
                     width:                  dx,
                     height:                 dy,
-                    left:                   (dx * j) + ox + j,
-                    top:                    (dy * i) + oy + i,
+                    left:                   (dx * j) + ox,
+                    top:                    (dy * i) + oy,
                     backgroundPosition:     ((-config.old.get(0).offsetWidth / x) * j) + 'px ' + ((-config.old.get(0).offsetHeight / y) * i) + 'px'
                 }));
                 config.view.append(grid[i][j].animate({
