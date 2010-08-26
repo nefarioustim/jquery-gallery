@@ -32,16 +32,16 @@
                 image.push(new Image().src = this.href);
             });
             
-            thumbs.delegate("a", "click", function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                
-                var el      = $(this),
-                    old     = viewPane.find("img"),
+            gallery.bind("switch-transition.gallery", function(e, trans) {
+                defaults.transition = trans;
+            });
+            
+            gallery.bind("show-image.gallery", function(e, href, alt) {
+                var old     = viewPane.find("img"),
                     i       = new Image();
                 
-                i.src   = el.attr("href");
-                i.alt   = el.find("img").attr("alt");
+                i.src   = href;
+                i.alt   = alt;
                 
                 viewPane.append(i);
                 
@@ -82,6 +82,15 @@
                         gallery.gallery[defaults.transition](transConfig);
                     });
                 }
+            });
+            
+            thumbs.delegate("a", "click", function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                
+                var el      = $(this);
+                
+                gallery.trigger("show-image", [el.attr("href"), el.find("img").attr("alt")])
             });
             
             gallery.carousel({

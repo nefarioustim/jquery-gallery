@@ -91,6 +91,28 @@
         });
     };
     
+    $.fn.gallery.cheeseyZoom = function(config) {
+        config.view.css({
+            height:     config.next.get(0).offsetHeight,
+            width:      config.next.get(0).offsetWidth,
+            overflow:   "hidden"
+        });
+        config.next.css({
+            height: "110%",
+            width:  "110%"
+        });
+        config.next.animate({
+            height:     "100%",
+            width:      "100%"
+        }, {
+            duration:   config.duration,
+            queue:      false
+        });
+        config.old.fadeOut(config.duration, function(e) {
+            $(this).remove();
+        });
+    }
+    
     $.fn.gallery.curtain = function(config) {
         var leftPane    = config.old.css({
                 border:                 "0",
@@ -149,20 +171,17 @@
                     top:                    (dy * i) + oy + i,
                     backgroundPosition:     ((-config.old.get(0).offsetWidth / x) * j) + 'px ' + ((-config.old.get(0).offsetHeight / y) * i) + 'px'
                 }));
-                config.view.append(grid[i][j]);
-                grid[i][j].ready(function(e) {
-                    grid[i][j].animate({
-                        width:      0,
-                        height:     0,
-                        opacity:    0
-                    },{
-                        duration:   config.duration,
-                        queue:      false,
-                        complete:   function(e) {
-                            $(this).remove();
-                        }
-                    });
-                });
+                config.view.append(grid[i][j].animate({
+                    width:      0,
+                    height:     0,
+                    opacity:    0
+                },{
+                    duration:   config.duration,
+                    queue:      false,
+                    complete:   function(e) {
+                        $(this).remove();
+                    }
+                }));
             }
         }
         config.old.remove();

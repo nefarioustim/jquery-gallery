@@ -9,16 +9,19 @@
         <style type="text/css">
             .gallery {
                 background: #000;
+                margin:     20px auto;
                 padding:    20px 20px 10px;
-                width:      400px;
+                width:      402px;
                 -moz-border-radius:     8px;
                 -webkit-border-radius:  8px;
                 border-radius:          8px;
             }
-                .gallery img,
-                .gallery .shim {
-                    border:     1px solid #444;
+                .gallery img {
                     display:    block;
+                }
+                .gallery .view,
+                .gallery .clip img {
+                    border:     1px solid #444;
                 }
             .gallery .clip {
                 margin:     10px 20px 0;
@@ -56,6 +59,27 @@
     <body>
         <div id="page">
             <h1>Widgets: Gallery</h1>
+            <p>This is a simple jQuery gallery script that includes a transitions
+            framework, allowing a library of pre-written or custom transitions
+            between images.</p>
+            <h2>Examples</h2>
+            <form method="get" action="">
+                <label for="trans-change">Active transition:</label>
+                <select id="trans-change">
+                    <option value="fade" selected="selected">Fade</option>
+                    <option value="slideUp">SlideUp</option>
+                    <option value="slideUpRight">SlideUpRight</option>
+                    <option value="slideRight">SlideRight</option>
+                    <option value="slideDownRight">SlideDownRight</option>
+                    <option value="slideDown">SlideDown</option>
+                    <option value="slideDownLeft">SlideDownLeft</option>
+                    <option value="slideLeft">SlideLeft</option>
+                    <option value="slideUpLeft">SlideUpLeft</option>
+                    <option value="cheeseyZoom">CheeseyZoom</option>
+                    <option value="curtain">Curtain</option>
+                    <option value="squares">Squares</option>
+                </select>
+            </form>
             <div class="gallery carousel">
                 <div class="view"></div>
                 <div class="clip">
@@ -83,8 +107,9 @@
         <script type="text/javascript" src="js/jquery.gallery.1.0.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/jquery.gallery.transitions.js" charset="utf-8"></script>
         <script type="text/javascript">
-            $(".gallery").gallery({
-                "transition": "squares"
+            $(".gallery").gallery();
+            $("#trans-change").change(function(e) {
+                $(".gallery").trigger("switch-transition", this.value);
             });
         </script>
     </body>
