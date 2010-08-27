@@ -16,6 +16,13 @@
                 -webkit-border-radius:  8px;
                 border-radius:          8px;
             }
+                .gallery:after {
+                    content: ".";
+                    display: block;
+                    height: 0;
+                    clear: both;
+                    visibility: hidden;
+                }
                 .gallery img {
                     display:    block;
                 }
@@ -26,9 +33,12 @@
             .gallery .clip {
                 margin:     10px 20px 0;
             }
-                .gallery .clip ul {
+                .gallery .clip .horizontal {
                     height: 52px;
                 }
+                    .gallery .horizontal > li {
+                        padding:    0 10px;
+                    }
             .gallery .play,
             .gallery .pause {
                 display:    none;
@@ -51,9 +61,32 @@
                 background-position:    -24px 0;
                 right:                  10px;
             }
-            .gallery .horizontal > li {
-                padding:    0 10px;
+            
+            #example2 {
+                width:      496px;
+                padding:    20px 0 20px 20px;
             }
+                #example2 .clip,
+                #example2 .view {
+                    float:      left;
+                    margin:     0;
+                }
+                #example2 .clip {
+                    margin:     20px 20px;
+                    height:     216px;
+                }
+                    #example2 .vertical > li {
+                        padding:    10px 0;
+                    }
+                #example2 .prev button {
+                    right:      35px;
+                    left:       auto;
+                    top:        15px;
+                }
+                #example2 .next button {
+                    right:      35px;
+                    bottom:     15px;
+                }
         </style>
     </head>
     <body>
@@ -63,9 +96,10 @@
             framework, allowing a library of pre-written or custom transitions
             between images.</p>
             <h2>Examples</h2>
+            <h3>Example 1</h3>
             <form method="get" action="">
-                <label for="trans-change">Active transition:</label>
-                <select id="trans-change">
+                <label for="trans-change1">Active transition:</label>
+                <select id="trans-change1">
                     <option value="fade" selected="selected">fade</option>
                     <option value="wipe">wipe</option>
                     <option value="slideUp">slideUp</option>
@@ -83,10 +117,51 @@
                     <option value="tinySquares">tinySquares</option>
                 </select>
             </form>
-            <div class="gallery carousel">
+            <div id="example1" class="gallery carousel">
                 <div class="view"></div>
                 <div class="clip">
                     <ul class="horizontal">
+                        <li><a href="img/thedarkknight.jpg"><img src="img/thedarkknight.thumb.jpg" width="50" height="50" alt="The Dark Knight"></a></li>
+                        <li><a href="img/horde.jpg"><img src="img/horde.thumb.jpg" width="50" height="50" alt="Horde"></a></li>
+                        <li><a href="img/galactica.jpg"><img src="img/galactica.thumb.jpg" width="50" height="50" alt="Battlestar Galactica"></a></li>
+                        <li><a href="img/pegasus.jpg"><img src="img/pegasus.thumb.jpg" width="50" height="50" alt="Battlestar Pegasus"></a></li>
+                        <li><a href="img/valkyrie.jpg"><img src="img/valkyrie.thumb.jpg" width="50" height="50" alt="Battlestar Valkyrie"></a></li>
+                        <li><a href="img/command.jpg"><img src="img/command.thumb.jpg" width="50" height="50" alt="Command uniform"></a></li>
+                        <li><a href="img/engineering.jpg"><img src="img/engineering.thumb.jpg" width="50" height="50" alt="Engineering uniform"></a></li>
+                        <li><a href="img/onering.jpg"><img src="img/onering.thumb.jpg" width="50" height="50" alt="One Ring"></a></li>
+                        <li><a href="img/fellowship.jpg"><img src="img/fellowship.thumb.jpg" width="50" height="50" alt="The Fellowship of the Ring"></a></li>
+                        <li><a href="img/twotowers.jpg"><img src="img/twotowers.thumb.jpg" width="50" height="50" alt="The Two Towers"></a></li>
+                        <li><a href="img/returnoftheking.jpg"><img src="img/returnoftheking.thumb.jpg" width="50" height="50" alt="The Return of the King"></a></li>
+                        <li><a href="img/blueprint.jpg"><img src="img/blueprint.thumb.jpg" width="50" height="50" alt="Blueprint"></a></li>
+                        <li><a href="img/orphanage.jpg"><img src="img/orphanage.thumb.jpg" width="50" height="50" alt="Orphanage"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <h3>Example 2</h3>
+            <form method="get" action="">
+                <label for="trans-change2">Active transition:</label>
+                <select id="trans-change2">
+                    <option value="fade" selected="selected">fade</option>
+                    <option value="wipe">wipe</option>
+                    <option value="slideUp">slideUp</option>
+                    <option value="slideUpRight">slideUpRight</option>
+                    <option value="slideRight">slideRight</option>
+                    <option value="slideDownRight">slideDownRight</option>
+                    <option value="slideDown">slideDown</option>
+                    <option value="slideDownLeft">slideDownLeft</option>
+                    <option value="slideLeft">slideLeft</option>
+                    <option value="slideUpLeft">slideUpLeft</option>
+                    <option value="cheeseyZoom">cheeseyZoom</option>
+                    <option value="curtain">curtain</option>
+                    <option value="squares">squares</option>
+                    <option value="smallSquares">smallSquares</option>
+                    <option value="tinySquares">tinySquares</option>
+                </select>
+            </form>
+            <div id="example2" class="gallery carousel">
+                <div class="view"></div>
+                <div class="clip">
+                    <ul class="vertical">
                         <li><a href="img/thedarkknight.jpg"><img src="img/thedarkknight.thumb.jpg" width="50" height="50" alt="The Dark Knight"></a></li>
                         <li><a href="img/horde.jpg"><img src="img/horde.thumb.jpg" width="50" height="50" alt="Horde"></a></li>
                         <li><a href="img/galactica.jpg"><img src="img/galactica.thumb.jpg" width="50" height="50" alt="Battlestar Galactica"></a></li>
@@ -110,9 +185,16 @@
         <script type="text/javascript" src="js/jquery.gallery.1.0.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/jquery.gallery.transitions.js" charset="utf-8"></script>
         <script type="text/javascript">
-            $(".gallery").gallery();
-            $("#trans-change").change(function(e) {
-                $(".gallery").trigger("switch-transition", this.value);
+            $("#example1").gallery();
+            $("#trans-change1").change(function(e) {
+                $("#example1").trigger("switch-transition", this.value);
+            });
+            $("#example2").gallery({
+                "visiblePanes": 3,
+                "panesToMove":  3
+            });
+            $("#trans-change2").change(function(e) {
+                $("#example2").trigger("switch-transition", this.value);
             });
         </script>
     </body>
