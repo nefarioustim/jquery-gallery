@@ -1,4 +1,10 @@
 (function($) {
+    $.fn.gallery.wipe = function(config) {
+        config.old.hide(config.duration, function(e) {
+            $(this).remove();
+        });
+    };
+    
     $.fn.gallery.slideUp = function(config) {
         config.old.animate({
             top: -config.old.get(0).offsetHeight + 'px'
@@ -153,7 +159,7 @@
         });
     };
     
-    function squares(x, y, config) {
+    function divide(x, y, config) {
         var grid = [],
             dx = config.next.width() / x,
             dy = config.next.height() / y,
@@ -171,7 +177,6 @@
                     top:                    (dy * i) + oy,
                     backgroundPosition:     ((-config.old.get(0).offsetWidth / x) * j) + 'px ' + ((-config.old.get(0).offsetHeight / y) * i) + 'px'
                 }));
-                //var rnd = config.duration + (Math.floor(Math.random() * (3)) + 1) * 500;
                 config.view.append(grid[i][j].animate({
                     width:      0,
                     height:     0,
@@ -189,12 +194,12 @@
     }
     
     $.fn.gallery.squares = function(config) {
-        squares(3, 2, config);
+        divide(3, 2, config);
     }
     $.fn.gallery.smallSquares = function(config) {
-        squares(6, 4, config);
+        divide(6, 4, config);
     }
     $.fn.gallery.tinySquares = function(config) {
-        squares(12, 8, config);
+        divide(12, 8, config);
     }
 })(jQuery);

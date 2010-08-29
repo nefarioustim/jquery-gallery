@@ -111,10 +111,4 @@
             $(this).remove();
         });
     };
-    
-    $.fn.gallery.wipe = function(config) {
-        config.old.hide(config.duration, function(e) {
-            $(this).remove();
-        });
-    };
 })(jQuery);
