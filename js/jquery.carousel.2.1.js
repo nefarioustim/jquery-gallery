@@ -9,7 +9,7 @@
  */
  
 (function($) {
-    var debugMode = false;
+    var debugMode = true;
     
     function debug(msg) {
         if(debugMode && window.console && window.console.log){
@@ -18,8 +18,14 @@
     }
     
     $.fn.cleanWhitespace = function() {
-        textNodes = this.contents().filter(function(){
-            return (this.nodeType == 3 && !/\S/.test(this.nodeValue));
+        this.contents().filter(function() {
+            if (this.nodeType != 3) {
+                $(this).cleanWhitespace();
+                return false;
+            }
+            else {
+                return !/\S/.test(this.nodeValue);
+            }
         }).remove();
     };
     
@@ -207,9 +213,12 @@
                 
                 currentPane = pane;
                 
+                // If you start seeing strange animation jumps when your
+                // carousel has a large number of panels, try uncommenting
+                // the queue parameter below.
                 var animParams = {
                     duration: defaults.speed,
-                    queue: false,
+                    // queue: false,
                     complete: function(){
                         carousel.trigger("nav-state");
                     }
