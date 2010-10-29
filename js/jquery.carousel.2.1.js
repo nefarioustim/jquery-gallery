@@ -12,21 +12,18 @@
     var debugMode = false;
     
     function debug(msg) {
-        if(debugMode && window.console && window.console.log){
+        if (!debugMode) { return; }
+        if (window.console && window.console.log){
             window.console.log(msg);
+        } else {
+            alert(msg);
         }
     }
     
+    // Strip whitespace whilst dealing with IE8 DOM node absence FAIL.
+    
     $.fn.cleanWhitespace = function() {
-        this.contents().filter(function() {
-            if (this.nodeType != 3) {
-                $(this).cleanWhitespace();
-                return false;
-            }
-            else {
-                return !/\S/.test(this.nodeValue);
-            }
-        }).remove();
+        this.html(this.html().replace(/<\/li>\s+/gi, '</li>'));
     };
     
     $.fn.carousel = function(config) {
@@ -35,6 +32,7 @@
             "panesToMove": 1,
             "pagination": true,
             "speed": 200,
+            "easing": "swing",
             "loop": false,
             "autoplay": false,
             "hovercontrols": false,
@@ -47,6 +45,7 @@
         
         this.each(function(){
             var timer,
+                wasPlaying,
                 carousel = $(this),
                 clip = carousel.find(".clip:first"),
                 list = clip.find(">ul:first"),
@@ -60,7 +59,7 @@
             list.css({
                 "position": "relative"
             });
-            clip.cleanWhitespace();
+            list.cleanWhitespace();
             
             var clipWidth = clip.width(),
                 clipHeight = clip.get(0).offsetHeight,
@@ -80,7 +79,7 @@
                 basic = $('<ul class="basic" />');
 
             $.each(controls, function(name, value){
-                controls[name]  = $('<li class="' + name + '"><button>' + name + '</button></li>')
+                controls[name]  = $('<li class="' + name + '"><button type="button">' + name + '</button></li>')
                                     .find("button")
                                     .data("name", name)
                                     .end();
@@ -99,7 +98,7 @@
             if (defaults.pagination) {
                 var pagination = $('<ol class="pages" />');
                 for (var i = 0; i < panels.length / defaults.panesToMove; i++) {
-                    $('<li><button value="' + i + '">' + parseInt(i+1, 10) + '</button></li>').appendTo(pagination);
+                    $('<li><button type="button" value="' + i + '">' + parseInt(i+1, 10) + '</button></li>').appendTo(pagination);
                 }
                 pagination.appendTo(carousel.find(".controls"));
                 pagination.delegate("button", "click", function(e){
@@ -113,23 +112,27 @@
             
             // Carousel hover
             carousel.hover(function(e){
-                if (defaults.hovercontrols)
+                if (defaults.hovercontrols) {
                     controlset
-                        .stop()
+                        .stop(true, true)
                         .fadeIn({"duration": 200, "queue": false});
+                }
                 if (defaults.hoverpause) {
-                    if (carousel.data("playing"))
-                        var play = true;
-                    carousel.trigger("pause");
-                    if (play)
+                    wasPlaying = carousel.data("playing");
+                    if (wasPlaying) {
+                        carousel.trigger("pause");
                         carousel.data("playing", true);
+                    }
                 }
             }, function(e){
-                if (defaults.hovercontrols)
+                if (defaults.hovercontrols) {
                     controlset
+                        .stop(true, true)
                         .fadeOut({"duration": 200, "queue": false});
-                if (defaults.hoverpause && carousel.data("playing"))
+                }
+                if (wasPlaying && defaults.hoverpause && carousel.data("playing")) {
                     carousel.trigger("play");
+                }
             });
             
             // Handy functions
@@ -167,7 +170,7 @@
             carousel.bind("nav-state.carousel", function() {
                 if (!defaults.loop) {
                     active(controls["prev"], !(currentPane == 0));
-                    active(controls["next"], !(currentPane == numPanes));
+                    active(controls["next"], !(currentPane == (numPanes - defaults.panesToMove)));
                 }
                 if (defaults.pagination) {
                     carousel.find(".pages .current")
@@ -180,7 +183,7 @@
             });
             
             carousel.bind("move.carousel", function(e, panes) {
-                clip.cleanWhitespace();
+                list.cleanWhitespace();
                 numPanes = list.find("> li").length;
                 var lastPane = currentPane;
                 panes = panes || 1;
@@ -213,15 +216,12 @@
                 
                 currentPane = pane;
                 
-                // If you start seeing strange animation jumps when your
-                // carousel has a large number of panels, try uncommenting
-                // the queue parameter below.
+                carousel.trigger("nav-state");
+                
                 var animParams = {
                     duration: defaults.speed,
-                    // queue: false,
-                    complete: function(){
-                        carousel.trigger("nav-state");
-                    }
+                    easing: defaults.easing,
+                    queue: false
                 };
                 
                 if (defaults.transition) {
@@ -311,7 +311,6 @@
         
         config.anim.complete = function() {
             currentPaneEl.hide();
-            config.carousel.trigger("nav-state");
         };
         nextPaneEl.fadeIn(config.anim);
     };
